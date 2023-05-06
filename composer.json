@@ -1,0 +1,23 @@
+{
+  "name": "igormsoares/coursera-design-patterns",
+  "description": "Final challenge from the course 'Desenvolvimento Agil com Padroes de Projeto\"",
+  "type": "project",
+  "require-dev": {
+    "phpunit/phpunit": "^10"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Igormsoares\\CourseraDesignPatterns\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "igorMSoares",
+      "email": "igorms.dev@gmail.com"
+    }
+  ],
+  "scripts": {
+    "test": "./vendor/bin/phpunit --testdox tests"
+  }
+}
