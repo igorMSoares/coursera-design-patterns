@@ -8,10 +8,10 @@ class Points extends Achievement
 {
   private int $points;
 
-  public function __construct(string $name)
+  public function __construct(string $name, int $points = 0)
   {
     $this->name = $name;
-    $this->points = 0;
+    $this->points = $points;
   }
 
   public function getTotalPoints(): int
