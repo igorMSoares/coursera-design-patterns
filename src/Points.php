@@ -1,8 +1,8 @@
 <?php
 
-use function Sodium\increment;
-
 declare(strict_types=1);
+
+namespace Igormsoares\CourseraDesignPatterns;
 
 class Points extends Achievement
 {

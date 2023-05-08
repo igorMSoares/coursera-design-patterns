@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Igormsoares\CourseraDesignPatterns;
+
 interface AchievementStorage
 {
   public function addAchievement(string $user, Achievement $a): void;

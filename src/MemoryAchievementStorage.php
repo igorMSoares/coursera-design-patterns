@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Igormsoares\CourseraDesignPatterns;
+
 class MemoryAchievementStorage implements AchievementStorage
 {
   private object $achievementsList;
