@@ -12,8 +12,13 @@ class MemoryAchievementStorage implements AchievementStorage
   {
     if (!$this->achievementsList[$user]) !$this->achievementsList[$user] = [];
 
-    // push $a into achievementsList[$user]
-    $this->achievementsList[$user][] = $a;
+    $userAchievement = $this->getAchievement($user, $a->getName());
+
+    // add achievement only if it doesn't already exists
+    if ($userAchievement instanceof NullAchievement) {
+      // push $a into achievementsList[$user]
+      $this->achievementsList[$user][] = $a;
+    }
   }
 
   public function getAchievements(string $user): array
