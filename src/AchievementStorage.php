@@ -6,14 +6,14 @@ namespace Igormsoares\CourseraDesignPatterns;
 
 interface AchievementStorage
 {
-  public function addAchievement(string $user, Achievement $a): void;
+  public static function addAchievement(string $user, Achievement $a): void;
 
   /**
    * @return Achievement[]
    */
-  public function getAchievements(string $user): array;
+  public static function getAchievements(string $user): array;
 
-  public function getAchievement(
+  public static function getAchievement(
     string $user,
     string $achievementName
   ): Achievement;
