@@ -2,27 +2,29 @@
 
 declare(strict_types=1);
 
-class MemoryAchievementsStorage implements AchievementStorage
+class MemoryAchievementStorage implements AchievementStorage
 {
   private object $achievementsList;
+
   public function addAchievement(string $user, Achievement $a): void
   {
-    if (!$this->achievementsList->$user) $this->achievementsList->$user = [];
-    $this->achievementsList->$user[] = $a;
+    if (!$this->achievementsList[$user]) !$this->achievementsList[$user] = [];
+
+    // push $a into achievementsList[$user]
+    $this->achievementsList[$user][] = $a;
   }
 
   public function getAchievements(string $user): array
   {
-    return $this->achievementsList->$user;
+    return $this->achievementsList[$user];
   }
 
-  public function getAchievement(
-    string $user,
-    string $achievementName
-  ): Achievement {
+  public function getAchievement(string $user, string $achievementName): Achievement
+  {
     $userAchievements = $this->getAchievements($user);
+
     foreach ($userAchievements as $achievement) {
-      if ($achievement['name'] == $achievementName) return $achievement;
+      if ($achievement['name'] === $achievementName) return $achievement;
     }
 
     return new NullAchievement;

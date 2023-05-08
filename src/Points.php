@@ -1,14 +1,15 @@
 <?php
 
+use function Sodium\increment;
+
 declare(strict_types=1);
 
 class Points extends Achievement
 {
   private int $points;
 
-  public function __construct(int $userId, string $name)
+  public function __construct(string $name)
   {
-    $this->userId = $userId;
     $this->name = $name;
     $this->points = 0;
   }
@@ -16,5 +17,10 @@ class Points extends Achievement
   public function getTotalPoints(): int
   {
     return $this->points;
+  }
+
+  public function addPoints(int $increment): void
+  {
+    $this->points += $increment;
   }
 }
