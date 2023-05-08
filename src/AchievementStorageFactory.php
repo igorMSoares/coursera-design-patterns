@@ -7,8 +7,11 @@ namespace Igormsoares\CourseraDesignPatterns;
 class AchievementStorageFactory
 {
   protected ?AchievementStorage $storageInstance;
-  static function getAchievementStorage(): AchievementStorage|null
+  static function getAchievementStorage(): AchievementStorage
   {
+    if (!self::$storageInstance)
+      self::setAchievementStorage(new MemoryAchievementStorage());
+
     return self::$storageInstance;
   }
 
