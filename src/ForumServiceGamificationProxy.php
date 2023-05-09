@@ -12,26 +12,32 @@ class ForumServiceGamificationProxy implements ForumService
   {
     $this->forumService = $service;
   }
+
   private function addBadge(string $user, string $badgeName): void
   {
-    $badge = MemoryAchievementStorage::getAchievement($user, $badgeName);
+    $achievementStorage = AchievementStorageFactory::getAchievementStorage();
+    $badgeAchievement = $achievementStorage->getAchievement($user, $badgeName);
+
     // Add achievement if it doesn't already exist
-    if ($badge instanceof NullAchievement) {
-      MemoryAchievementStorage::addAchievement($user, new Badge($badgeName));
+    if ($badgeAchievement instanceof NullAchievement) {
+      $achievementStorage->addAchievement($user, new Badge($badgeName));
     }
   }
 
   private function addPoints(string $user, string $achievementName, int $points): void
   {
-    $achievement = MemoryAchievementStorage::getAchievement($user, $achievementName);
+    $achievementStorage = AchievementStorageFactory::getAchievementStorage();
+    $pointsAchievement = $achievementStorage->getAchievement($user, $achievementName);
 
-    if ($achievement instanceof NullAchievement) {
-      MemoryAchievementStorage::addAchievement(
+    if ($pointsAchievement instanceof NullAchievement) {
+      // Create new achievement with this name
+      $achievementStorage->addAchievement(
         $user,
         new Points($achievementName, $points)
       );
-    } else if ($points instanceof Points) {
-      $points->addPoints($points);
+    } else if ($pointsAchievement instanceof Points) {
+      // Already exists an achievement with this name, so increment its points
+      $pointsAchievement->addPoints($points);
     }
   }
 
@@ -55,7 +61,7 @@ class ForumServiceGamificationProxy implements ForumService
   {
     $this->forumService->likeTopic($user, $topic, $topicUser);
 
-    $this->addPoints($user, 'PARTICIPATION', 1);
+    $this->addPoints($user, 'CREATION', 1);
   }
 
   public function likeComment(
