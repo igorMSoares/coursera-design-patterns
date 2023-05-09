@@ -17,6 +17,6 @@ class AchievementStorageFactory
 
   static function setAchievementStorage(AchievementStorage $a): void
   {
-    if (!self::$storageInstance) self::$storageInstance = $a;
+    self::$storageInstance = $a;
   }
 }
