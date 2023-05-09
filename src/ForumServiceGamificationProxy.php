@@ -6,6 +6,12 @@ namespace Igormsoares\CourseraDesignPatterns;
 
 class ForumServiceGamificationProxy implements ForumService
 {
+  private ForumService $forumService;
+
+  public function __construct(ForumService $service)
+  {
+    $this->forumService = $service;
+  }
   private function addBadge(string $user, string $badgeName): void
   {
     $badge = MemoryAchievementStorage::getAchievement($user, $badgeName);
@@ -31,18 +37,24 @@ class ForumServiceGamificationProxy implements ForumService
 
   public function addTopic(string $user, string $topic): void
   {
+    $this->forumService->addTopic($user, $topic);
+
     $this->addPoints($user, 'CREATION', 5);
     $this->addBadge($user, 'I CAN TALK');
   }
 
   public function addComment(string $user, string $topic, string $comment): void
   {
+    $this->forumService->addComment($user, $topic, $comment);
+
     $this->addPoints($user, 'PARTICIPATION', 3);
     $this->addBadge($user, 'LET ME ADD');
   }
 
   public function likeTopic(string $user, string $topic, string $topicUser): void
   {
+    $this->forumService->likeTopic($user, $topic, $topicUser);
+
     $this->addPoints($user, 'PARTICIPATION', 1);
   }
 
@@ -52,6 +64,13 @@ class ForumServiceGamificationProxy implements ForumService
     string $comment,
     string $commentUser
   ): void {
+    $this->forumService->likeComment(
+      $user,
+      $topic,
+      $comment,
+      $commentUser
+    );
+
     $this->addPoints($user, 'PARTICIPATION', 1);
   }
 }
