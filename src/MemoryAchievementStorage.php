@@ -4,31 +4,40 @@ declare(strict_types=1);
 
 namespace Igormsoares\CourseraDesignPatterns;
 
+use stdClass;
+
 class MemoryAchievementStorage implements AchievementStorage
 {
-  private object $achievementsList;
+  private $achievementsList;
 
-  public static function addAchievement(string $user, Achievement $a): void
+  public function __construct()
   {
-    if (!self::$achievementsList[$user]) !self::$achievementsList[$user] = [];
+    $this->achievementsList = new stdClass();
+  }
 
-    $userAchievement = self::getAchievement($user, $a->getName());
+  public function addAchievement(string $user, Achievement $a): void
+  {
+    if (!$this->achievementsList->$user) !$this->achievementsList->$user = [];
+
+    $userAchievement = $this->getAchievement($user, $a->getName());
 
     // add achievement only if it doesn't already exists
-    if ($userAchievement instanceof NullAchievement) {
-      // push $a into achievementsList[$user]
-      self::$achievementsList[$user][] = $a;
+    if (!($userAchievement instanceof NullAchievement)) {
+      // push $a into achievementsList->$user
+      $this->achievementsList->$user[] = $a;
     }
   }
 
-  public static function getAchievements(string $user): array
+  public function getAchievements(string $user): array
   {
-    return self::$achievementsList[$user];
+    return property_exists($this->achievementsList, $user)
+      ? $this->achievementsList->$user
+      : [];
   }
 
-  public static function getAchievement(string $user, string $achievementName): Achievement
+  public function getAchievement(string $user, string $achievementName): Achievement
   {
-    $userAchievements = self::getAchievements($user);
+    $userAchievements = $this->getAchievements($user);
 
     foreach ($userAchievements as $achievement) {
       if ($achievement['name'] === $achievementName) return $achievement;
