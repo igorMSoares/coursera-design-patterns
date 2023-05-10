@@ -193,8 +193,20 @@ final class ForumServiceGamificationProxyTest extends TestCase
 
     try {
       $forumServiceProxy->addTopic($user, 'topicName');
+    } catch (\Exception $_) {
+    }
+
+    try {
       $forumServiceProxy->addComment($user, 'topicName', 'comment');
+    } catch (\Exception $_) {
+    }
+
+    try {
       $forumServiceProxy->likeTopic($user, 'topicName', 'user2');
+    } catch (\Exception $_) {
+    }
+
+    try {
       $forumServiceProxy->likeComment($user, 'topicName', 'comment', 'user2');
     } catch (\Exception $_) {
     }
