@@ -9,10 +9,19 @@ use stdClass;
 class MemoryAchievementStorage implements AchievementStorage
 {
   private $achievementsList;
+  /**
+   * @var AchievementObserver[]
+   */
+  private $achievementObserversList = [];
 
   public function __construct()
   {
     $this->achievementsList = new stdClass();
+  }
+
+  public function attachAchievementObserver(AchievementObserver $o): void
+  {
+    $this->achievementObserversList[] = $o;
   }
 
   public function addAchievement(string $user, Achievement $a): void
@@ -23,6 +32,10 @@ class MemoryAchievementStorage implements AchievementStorage
       !$this->achievementsList->$user = [];
 
     $this->achievementsList->$user[] = $a;
+
+    foreach ($this->achievementObserversList as $achievementObserver) {
+      $achievementObserver->achievementUpdate($user, $a);
+    }
   }
 
   public function getAchievements(string $user): array
