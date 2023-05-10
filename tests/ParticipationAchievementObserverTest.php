@@ -29,4 +29,26 @@ final class ParticipationAchievementObserverTest extends TestCase
 
     $this->assertTrue($communityBadge instanceof Badge);
   }
+
+  public function testDontAddCommunityBadgeOnLessThan100ParticipationPoints(): void
+  {
+    $user = 'user1';
+
+    AchievementStorageFactory::setAchievementStorage(new MemoryAchievementStorage());
+    $achievementStorage = AchievementStorageFactory::getAchievementStorage();
+
+    $participationObserver = new ParticipationAchievementObserver($achievementStorage);
+
+    $participationAchievement = new Points('PARTICIPATION', 99);
+    $achievementStorage->addAchievement($user, $participationAchievement);
+
+    $participationObserver->achievementUpdate($user, $participationAchievement);
+
+    $communityBadge = $achievementStorage->getAchievement(
+      $user,
+      'PART OF THE COMMUNITY'
+    );
+
+    $this->assertTrue($communityBadge instanceof NullAchievement);
+  }
 }
