@@ -8,6 +8,21 @@ use PHPUnit\Framework\TestCase;
 
 final class MemoryAchievementStorageTest extends TestCase
 {
+  public function testGetAchievementReturnsNullAchievementIfAchievementNotFound(): void
+  {
+    $user = 'user1';
+
+    AchievementStorageFactory::setAchievementStorage(new MemoryAchievementStorage());
+    $achievementStorage = AchievementStorageFactory::getAchievementStorage();
+
+    $achievement = $achievementStorage->getAchievement($user, 'NON EXISTENT');
+    $this->assertTrue($achievement instanceof NullAchievement);
+
+    $achievementStorage->addAchievement($user, new Points('CREATION', 5));
+    $achievement = $achievementStorage->getAchievement($user, 'CREATION');
+    $this->assertTrue($achievement instanceof Points);
+  }
+
   public function testObserversBeingNotified(): void
   {
     $user = 'user1';
@@ -15,14 +30,12 @@ final class MemoryAchievementStorageTest extends TestCase
     AchievementStorageFactory::setAchievementStorage(new MemoryAchievementStorage());
     $achievementStorage = AchievementStorageFactory::getAchievementStorage();
 
-    if ($achievementStorage instanceof MemoryAchievementStorage) {
-      $achievementStorage->attachAchievementObserver(
-        new CreationAchievementObserver($achievementStorage)
-      );
-      $achievementStorage->attachAchievementObserver(
-        new ParticipationAchievementObserver($achievementStorage)
-      );
-    }
+    $achievementStorage->attachAchievementObserver(
+      new CreationAchievementObserver($achievementStorage)
+    );
+    $achievementStorage->attachAchievementObserver(
+      new ParticipationAchievementObserver($achievementStorage)
+    );
 
     $participationAchievement = new Points('PARTICIPATION', 100);
     $achievementStorage->addAchievement($user, $participationAchievement);

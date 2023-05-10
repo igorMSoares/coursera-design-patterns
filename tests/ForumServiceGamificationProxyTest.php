@@ -78,6 +78,25 @@ final class ForumServiceGamificationProxyTest extends TestCase
     $this->assertSame($creationPoints, $points);
   }
 
+  public function testForumServiceAddingBadgeAndPointsOnLikeComment(): void
+  {
+    $user = 'user1';
+
+    AchievementStorageFactory::setAchievementStorage(new MemoryAchievementStorage());
+    $forumService = new ForumServiceGamificationProxy(new ForumServiceGamification());
+    $forumService->likeComment($user, 'topicName', 'comment', 'user2');
+
+    $participationPoints = 1;
+
+    $achievementStorage = AchievementStorageFactory::getAchievementStorage();
+    $pointsAchievement =  $achievementStorage->getAchievement($user, 'PARTICIPATION');
+
+    if ($pointsAchievement instanceof Points) {
+      $points = $pointsAchievement->getTotalPoints();
+    }
+    $this->assertSame($participationPoints, $points);
+  }
+
   public function testForumServiceAddingBadgeAndPointsOnAddTopicTwice(): void
   {
     $user = 'user1';
@@ -164,14 +183,12 @@ final class ForumServiceGamificationProxyTest extends TestCase
     AchievementStorageFactory::setAchievementStorage(new MemoryAchievementStorage());
     $achievementStorage = AchievementStorageFactory::getAchievementStorage();
 
-    if ($achievementStorage instanceof MemoryAchievementStorage) {
-      $achievementStorage->attachAchievementObserver(
-        new CreationAchievementObserver($achievementStorage)
-      );
-      $achievementStorage->attachAchievementObserver(
-        new ParticipationAchievementObserver($achievementStorage)
-      );
-    }
+    $achievementStorage->attachAchievementObserver(
+      new CreationAchievementObserver($achievementStorage)
+    );
+    $achievementStorage->attachAchievementObserver(
+      new ParticipationAchievementObserver($achievementStorage)
+    );
 
     $forumServiceMock = $this->createMock(ForumServiceGamification::class);
     if ($forumServiceMock instanceof MockObject) {
@@ -216,5 +233,75 @@ final class ForumServiceGamificationProxyTest extends TestCase
 
     $this->assertTrue($creationAchievement instanceof NullAchievement);
     $this->assertTrue($talkAchievement instanceof NullAchievement);
+  }
+
+  public function testObserversAddingBadgesWhen100CreationPointsReachedIncrementally(): void
+  {
+    $user = 'user1';
+
+    AchievementStorageFactory::setAchievementStorage(new MemoryAchievementStorage());
+    $achievementStorage = AchievementStorageFactory::getAchievementStorage();
+
+    $achievementStorage->attachAchievementObserver(
+      new CreationAchievementObserver($achievementStorage)
+    );
+    $achievementStorage->attachAchievementObserver(
+      new ParticipationAchievementObserver($achievementStorage)
+    );
+
+    $forumServiceProxy = new ForumServiceGamificationProxy(
+      new ForumServiceGamification()
+    );
+
+    for ($i = 0; $i < 19; $i++) {
+      $forumServiceProxy->addTopic($user, "topic$i");
+    }
+
+    $inventorBadge = $achievementStorage->getAchievement($user, 'INVENTOR');
+    $this->assertTrue($inventorBadge instanceof NullAchievement);
+
+    for ($i = 0; $i < 5; $i++) {
+      $forumServiceProxy->likeTopic($user, "topic$i", 'user2');
+    }
+
+    $inventorBadge = $achievementStorage->getAchievement($user, 'INVENTOR');
+    $this->assertTrue($inventorBadge instanceof Badge);
+  }
+
+  public function testObserversAddingBadgesWhen100ParticipationPointsReachedIncrementally(): void
+  {
+    $user = 'user1';
+
+    AchievementStorageFactory::setAchievementStorage(new MemoryAchievementStorage());
+    $achievementStorage = AchievementStorageFactory::getAchievementStorage();
+
+    $achievementStorage->attachAchievementObserver(
+      new CreationAchievementObserver($achievementStorage)
+    );
+    $achievementStorage->attachAchievementObserver(
+      new ParticipationAchievementObserver($achievementStorage)
+    );
+
+    $forumServiceProxy = new ForumServiceGamificationProxy(
+      new ForumServiceGamification()
+    );
+
+    for ($i = 0; $i < 33; $i++) {
+      $forumServiceProxy->addComment($user, "topic$1", 'comment');
+    }
+
+    $inventorBadge = $achievementStorage->getAchievement(
+      $user,
+      'PART OF THE COMMUNITY'
+    );
+    $this->assertTrue($inventorBadge instanceof NullAchievement);
+
+    $forumServiceProxy->likeComment($user, "topic", 'comment', 'user2');
+
+    $inventorBadge = $achievementStorage->getAchievement(
+      $user,
+      'PART OF THE COMMUNITY'
+    );
+    $this->assertTrue($inventorBadge instanceof Badge);
   }
 }
