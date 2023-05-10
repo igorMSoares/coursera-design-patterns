@@ -31,7 +31,15 @@ class MemoryAchievementStorage implements AchievementStorage
     if (!property_exists($this->achievementsList, $user))
       !$this->achievementsList->$user = [];
 
-    $this->achievementsList->$user[] = $a;
+    $storedAchievement = $this->getAchievement($user, $a->getName());
+
+    // If there is no achievement with this name already, then add it
+    if ($storedAchievement instanceof NullAchievement) {
+      $this->achievementsList->$user[] = $a;
+    } else if ($storedAchievement instanceof Points && $a instanceof Points) {
+      // There's already a Points achievement with this name, so increment it
+      $storedAchievement->addPoints($a->getTotalPoints());
+    }
 
     foreach ($this->achievementObserversList as $achievementObserver) {
       $achievementObserver->achievementUpdate($user, $a);

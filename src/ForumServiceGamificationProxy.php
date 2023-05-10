@@ -7,10 +7,12 @@ namespace Igormsoares\CourseraDesignPatterns;
 class ForumServiceGamificationProxy implements ForumService
 {
   private ForumService $forumService;
+  private AchievementStorage $achievementStorage;
 
   public function __construct(ForumService $service)
   {
     $this->forumService = $service;
+    $this->achievementStorage = AchievementStorageFactory::getAchievementStorage();
   }
 
   private function addBadge(string $user, string $badgeName): void
@@ -45,23 +47,28 @@ class ForumServiceGamificationProxy implements ForumService
   {
     $this->forumService->addTopic($user, $topic);
 
-    $this->addPoints($user, 'CREATION', 5);
-    $this->addBadge($user, 'I CAN TALK');
+    $this->achievementStorage->addAchievement($user, new Badge('I CAN TALK'));
+    $this->achievementStorage->addAchievement($user, new Points('CREATION', 5));
+    // $this->addPoints($user, 'CREATION', 5);
+    // $this->addBadge($user, 'I CAN TALK');
   }
 
   public function addComment(string $user, string $topic, string $comment): void
   {
     $this->forumService->addComment($user, $topic, $comment);
 
-    $this->addPoints($user, 'PARTICIPATION', 3);
-    $this->addBadge($user, 'LET ME ADD');
+    $this->achievementStorage->addAchievement($user, new Badge('LET ME ADD'));
+    $this->achievementStorage->addAchievement($user, new Points('PARTICIPATION', 3));
+    // $this->addPoints($user, 'PARTICIPATION', 3);
+    // $this->addBadge($user, 'LET ME ADD');
   }
 
   public function likeTopic(string $user, string $topic, string $topicUser): void
   {
     $this->forumService->likeTopic($user, $topic, $topicUser);
 
-    $this->addPoints($user, 'CREATION', 1);
+    $this->achievementStorage->addAchievement($user, new Points('CREATION', 1));
+    // $this->addPoints($user, 'CREATION', 1);
   }
 
   public function likeComment(
@@ -77,6 +84,7 @@ class ForumServiceGamificationProxy implements ForumService
       $commentUser
     );
 
-    $this->addPoints($user, 'PARTICIPATION', 1);
+    $this->achievementStorage->addAchievement($user, new Points('PARTICIPATION', 1));
+    // $this->addPoints($user, 'PARTICIPATION', 1);
   }
 }
