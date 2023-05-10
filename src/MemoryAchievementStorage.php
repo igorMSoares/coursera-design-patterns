@@ -41,8 +41,9 @@ class MemoryAchievementStorage implements AchievementStorage
       $storedAchievement->addPoints($a->getTotalPoints());
     }
 
+    $updatedAchievement = $this->getAchievement($user, $a->getName());
     foreach ($this->achievementObserversList as $achievementObserver) {
-      $achievementObserver->achievementUpdate($user, $a);
+      $achievementObserver->achievementUpdate($user, $updatedAchievement);
     }
   }
 
