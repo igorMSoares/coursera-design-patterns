@@ -6,6 +6,8 @@ namespace Igormsoares\CourseraDesignPatterns;
 
 interface AchievementStorage
 {
+  public function attachAchievementObserver(AchievementObserver $o): void;
+
   public function addAchievement(string $user, Achievement $a): void;
 
   /**
