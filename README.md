@@ -55,6 +55,8 @@ Os seguintes testes foram implementados:
 O script `main.php` simula um exemplo de como as classes seriam utilizadas em uma aplicação.
 São disparadas aleatoriamente ações do `ForumServiceGamificationProxy` (`addTopic()`, `addComent()`, `likeTopic()`, `likeComment()`) num total de 100 vezes e ao final será exibido no terminal o estado do `AchievementStorage`.
 
+### main.php Screenshot
+
 ![main.php output screenshot](https://igormsoares.github.io/public/examples/design-patterns-main-script.png)
 
 ## Instalação
