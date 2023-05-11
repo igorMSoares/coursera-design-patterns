@@ -10,7 +10,7 @@ class AchievementStorageFactory
   static function getAchievementStorage(): AchievementStorage
   {
     if (!self::$storageInstance)
-      self::setAchievementStorage(new MemoryAchievementStorage());
+      throw new \Exception('No AchievementStorage has been set.\n');
 
     return self::$storageInstance;
   }
