@@ -18,6 +18,7 @@
     }
   ],
   "scripts": {
-    "test": "./vendor/bin/phpunit --testdox tests"
+    "test": "./vendor/bin/phpunit --testdox tests",
+    "test-only": "./vendor/bin/phpunit --filter"
   }
 }
