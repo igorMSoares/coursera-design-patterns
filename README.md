@@ -44,4 +44,8 @@ Os seguintes testes, e outros mais, foram implementados:
 
 - Atingir 100 pontos de _"CREATION"_ e verificar se o usuário recebe o badge _"INVENTOR"_.
 
-- Atingir 100 pontos de _"PARTICIPATION" _ e verificar se o usuário recebe o badge _"PART OF THE COMMUNITY"_.
+- Atingir 100 pontos de _"PARTICIPATION"_ e verificar se o usuário recebe o badge _"PART OF THE COMMUNITY"_.
+
+### PHPUnit Screenshot
+
+![PHPUnit Screenshot](https://igormsoares.github.io/public/examples/design-patterns-phpunit-tests.png)
