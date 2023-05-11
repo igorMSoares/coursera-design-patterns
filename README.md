@@ -26,7 +26,7 @@ Se um `Achievement` não for econtrado em `AchievementStorage`, `getAchievement(
 
 ## Testes
 
-Os seguintes testes, e outros mais, foram implementados:
+Os seguintes testes foram implementados:
 
 - Chamar o método `addTopic()` e verificar se os achievements foram adicionados da forma correta.
 
@@ -49,3 +49,16 @@ Os seguintes testes, e outros mais, foram implementados:
 ### PHPUnit Screenshot
 
 ![PHPUnit Screenshot](https://igormsoares.github.io/public/examples/design-patterns-phpunit-tests.png)
+
+## Exemplo de Uso
+
+O script `main.php` simula um exemplo de como as classes seriam utilizadas em uma aplicação.
+São disparadas aleatoriamente ações do `ForumServiceGamificationProxy` (`addTopic()`, `addComent()`, `likeTopic()`, `likeComment()`) num total de 100 vezes e ao final será exibido no terminal o estado do `AchievementStorage`.
+
+```bash
+# (Necessário PHP8 e Composer instalados)
+# Para rodar o exemplo ou os testes, clone o projeto e na pasta raiz do projeto rode:
+composer install # Instala as dependencias
+php main.php # Roda o exemplo
+composer test # Roda os testes
+```
