@@ -26,6 +26,20 @@ function printAchievementsList(array $achievementsList): void
   echo "****************************\n\n";
 }
 
+function printAchievementsListHeader(
+  $i,
+  $addTopic,
+  $addComment,
+  $likeTopic,
+  $likeComment
+) {
+  echo "[addTopic: x$addTopic |";
+  echo " addComment: x$addComment |";
+  echo " likeTopic: x$likeTopic |";
+  echo " likeComment: x$likeComment]";
+  echo " ($i)";
+}
+
 // Initialize achievement storage
 AchievementStorageFactory::setAchievementStorage(new MemoryAchievementStorage());
 $achievementStorage = AchievementStorageFactory::getAchievementStorage();
@@ -70,29 +84,50 @@ $forumServiceFunctions = array(
  * Play around with the number of actions or
  * comment out any of the case options to
  * see how it will reflect in the user's final achievements */
+$addTopic = 0;
+$addComment = 0;
+$likeTopic = 0;
+$likeComment = 0;
 for ($i = 0; $i < 100; $i++) {
   $functionId = random_int(0, 3);
 
   switch ($functionId) {
     case 0: // addTopic()
       $forumServiceFunctions[0]($user1, $topic);
+      $addTopic++;
       break;
     case 1: // addComment()
       $forumServiceFunctions[1]($user1, $topic, $comment);
+      $addComment++;
       break;
     case 2: // likeTopic()
       $forumServiceFunctions[2]($user1, $topic, $user2);
+      $likeTopic++;
       break;
     case 3: // likeComment()
       $forumServiceFunctions[3]($user1, $topic, $comment, $user2);
+      $likeComment++;
       break;
   }
   if ($i % 40 == 0) {
-    echo "[$i]";
+
     $achievementsList = $achievementStorage->getAchievements($user1);
+    printAchievementsListHeader(
+      $i,
+      $addTopic,
+      $addComment,
+      $likeTopic,
+      $likeComment
+    );
     printAchievementsList($achievementsList);
   }
 }
-echo "[$i]";
 $achievementsList = $achievementStorage->getAchievements($user1);
+printAchievementsListHeader(
+  $i,
+  $addTopic,
+  $addComment,
+  $likeTopic,
+  $likeComment
+);
 printAchievementsList($achievementsList);
