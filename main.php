@@ -8,6 +8,24 @@ foreach (glob("src/*.php") as $filename) {
   require_once $filename;
 }
 
+function printAchievementsList(array $achievementsList): void
+{
+  // Prints all the achievements added to this user
+  echo "\n******** Conquistas ********\n";
+  foreach ($achievementsList as $achievement) {
+    $name = $achievement->getName();
+    echo "$name";
+
+    if ($achievement instanceof Points) {
+      $points = $achievement->getTotalPoints();
+      echo " [$points Pontos]\n";
+    } else if ($achievement instanceof Badge) {
+      echo " [Badge]\n";
+    }
+  }
+  echo "****************************\n\n";
+}
+
 // Initialize achievement storage
 AchievementStorageFactory::setAchievementStorage(new MemoryAchievementStorage());
 $achievementStorage = AchievementStorageFactory::getAchievementStorage();
@@ -69,7 +87,12 @@ for ($i = 0; $i < 100; $i++) {
       $forumServiceFunctions[3]($user1, $topic, $comment, $user2);
       break;
   }
+  if ($i % 40 == 0) {
+    echo "[$i]";
+    $achievementsList = $achievementStorage->getAchievements($user1);
+    printAchievementsList($achievementsList);
+  }
 }
-
-// Prints all the achievements added to this user
-var_dump($achievementStorage->getAchievements($user1));
+echo "[$i]";
+$achievementsList = $achievementStorage->getAchievements($user1);
+printAchievementsList($achievementsList);
