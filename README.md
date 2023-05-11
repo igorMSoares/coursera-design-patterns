@@ -63,7 +63,7 @@ São disparadas aleatoriamente ações do `ForumServiceGamificationProxy` (`addT
 
 Necessário PHP8 e Composer instalados.
 
-Para rodar o exemplo ou os testes, clone o projeto e na pasta raiz do projeto rode:
+Para rodar o exemplo ou os testes, clone o projeto e no diretório raiz do projeto rode:
 
 ```bash
 composer install # Instala as dependencias
