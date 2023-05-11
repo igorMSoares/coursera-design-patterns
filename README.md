@@ -14,11 +14,11 @@ Só pode haver uma única instância de `AchievementStorage` em toda aplicação
 
 ### Decorator
 
-Classes que implementam `ForumService` podem ter funcionalidades adicionais, como adicionar novos `Achievements`, através do decorator.
+Classes que implementam `ForumService` podem ter funcionalidades adicionais, como adicionar novos `Achievement`s, através do decorator.
 
 ### Observer
 
-`AchievementStorage` pode adicionar observers para disparar ações de acordo com o estado dos `Achievement` armazenados, como por exemplo atribuir um badge quando um determinado `Achievement` atingir um certo número de pontos.
+`AchievementStorage` pode adicionar `AchievementObserver`s para disparar ações de acordo com o estado dos `Achievement` armazenados, como por exemplo atribuir um badge quando um determinado `Achievement` atingir um certo número de pontos.
 
 ### Null Object
 
