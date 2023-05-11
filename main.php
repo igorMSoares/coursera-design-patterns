@@ -110,7 +110,6 @@ for ($i = 0; $i < 100; $i++) {
       break;
   }
   if ($i % 40 == 0) {
-
     $achievementsList = $achievementStorage->getAchievements($user1);
     printAchievementsListHeader(
       $i,
